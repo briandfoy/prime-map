@@ -9,7 +9,7 @@ help:
 build: delete
 	time perl make_prime_map.pl {{data_file}}
 
-# Convert the bit map to primes packed as 32-bit network order integers
+# Create a packed int data file, in network order
 packed:
 	time perl map_to_packed.pl {{data_file}} {{packed_file}}
 
