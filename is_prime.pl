@@ -1,24 +1,29 @@
 #!/usr/bin/perl
-use strict;
-use warnings;
+use v5.38;
 
 use File::Map qw(map_file);
 
-my $file = 'prime_map.dat';
+is_prime(@ARGV) unless caller;
 
-die "usage: $0 NUMBER [NUMBER ...]\n" unless @ARGV;
+sub is_prime (@args) {
+	my $file = 'prime_map.dat';
 
-map_file my $map, $file, '<';
+	die "usage: $0 NUMBER [NUMBER ...]\n" unless @ARGV;
 
-my $BITS = 8 * length($map);
+	map_file my $map, $file, '<';
 
-foreach my $number (@ARGV) {
-	unless ($number =~ /\A[0-9]+\z/ && $number < $BITS) {
-		warn "Skipping invalid number: $number\n";
-		next;
+	my $BITS = 8 * length($map);
+
+	foreach my $number (@ARGV) {
+		unless ($number =~ /\A[0-9]+\z/ && $number < $BITS) {
+			warn "Skipping invalid number: $number\n";
+			next;
+			}
+
+		printf "%s is %s\n",
+			$number,
+			vec($map, $number, 1) ? 'prime' : 'not prime';
 		}
-
-	printf "%s is %s\n",
-		$number,
-		vec($map, $number, 1) ? 'prime' : 'not prime';
 	}
+
+
